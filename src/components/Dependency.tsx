@@ -6,24 +6,26 @@ import ManifestContext from "../ManifestContext";
 
 export default function Dependency({name, rangeVersion}: { name: string, rangeVersion: string | semver.Range }) {
     const versionToLoad = useMemo(function () {
-        if (rangeVersion == '*' || rangeVersion == '' || rangeVersion == 'latest') {
+        const semverValidRange = semver.validRange(rangeVersion)
+
+        if (semverValidRange == '*' || semverValidRange == null) {
             return 'latest'
-        } else {
-            const semverMinVersion = semver.minVersion(rangeVersion);
+        }
 
-            if (semverMinVersion) {
-                const minVersionToLoad = semverMinVersion.version;
+        const semverMinVersion = semver.minVersion(semverValidRange);
 
-                const semverValid = semver.valid(minVersionToLoad);
+        if (semverMinVersion) {
+            const minVersionToLoad = semverMinVersion.version;
 
-                if (semverValid) {
-                    return semverValid
-                } else {
-                    return 'latest'
-                }
+            const semverValid = semver.valid(minVersionToLoad);
+
+            if (semverValid) {
+                return semverValid
             } else {
                 return 'latest'
             }
+        } else {
+            return 'latest'
         }
     }, [rangeVersion]);
 
