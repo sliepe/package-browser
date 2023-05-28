@@ -1,6 +1,6 @@
 {
   "name": "package-browser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Navigate through packages and its dependencies by a web browser.",
   "keywords": [
     "package",
